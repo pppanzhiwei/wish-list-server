@@ -4,7 +4,7 @@ const Service = require('egg').Service;
 class WishService extends Service {
   async setWishList() {
     const { app } = this;
-    const res = await app.mysql.get('wishlist');
+    const res = await app.mysql.query('select * from wishList order by id desc');
     return res;
   }
   async addWish(wish) {
@@ -12,7 +12,7 @@ class WishService extends Service {
     const res = await app.mysql.insert('wishlist', {
       content: wish.content,
       date: wish.date,
-      complete: wish.complete ? 1 : 0,
+      complete: (wish.complete) === true ? 1 : 0,
     });
     return res.affectedRows === 1 ? res.insertId : false;
   }
